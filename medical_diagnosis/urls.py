@@ -3,6 +3,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ia/', include('ia.url')),  # Corrige: ia.url (singular)
-    # Otras URLs del proyecto...
+    path('ia/', include('ia.url')), 
+    path('ml/', include('ml.urls')),
 ]

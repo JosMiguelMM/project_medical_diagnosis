@@ -1,13 +1,143 @@
 <!doctype html>
-<html>
+<html lang="es">
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Resultados del Clustering</title>
+        <style>
+            /* Estilos generales */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+
+            h1 {
+                color: #0056b3;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            /* Estilos para el formulario */
+            form {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input[type="file"],
+            input[type="number"] {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box; /* Para que padding y border no afecten el ancho total */
+            }
+
+            button[type="submit"] {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+
+            button[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+            /* Estilos para mensajes de error */
+            .error {
+                color: red;
+                margin-bottom: 10px;
+                padding: 10px;
+                background-color: #ffe6e6;
+                border: 1px solid #ff9999;
+                border-radius: 4px;
+            }
+
+            /* Estilos para la sección de resultados */
+            .results {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .results h2 {
+                color: #0056b3;
+                margin-top: 0;
+                margin-bottom: 15px;
+            }
+
+            .results p {
+                margin-bottom: 10px;
+            }
+
+            .results ul {
+                list-style-type: disc;
+                margin-left: 20px;
+                margin-bottom: 15px;
+            }
+
+            /* Estilos para la tabla */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+                border: 1px solid #ddd;
+            }
+
+            th,
+            td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                word-break: break-word; /* Evitar desbordamiento en celdas */
+            }
+
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9; /* Color de fila alterna */
+            }
+
+            tr:hover {
+                background-color: #e9e9e9; /* Efecto hover en filas */
+            }
+
+            /* Media query para pantallas más pequeñas */
+            @media (max-width: 600px) {
+                th,
+                td {
+                    padding: 8px 10px; /* Reducir el relleno en pantallas pequeñas */
+                    font-size: 0.9em; /* Reducir el tamaño de la fuente */
+                }
+            }
+        </style>
     </head>
     <body>
         <h1>Carga de Datos y Clustering</h1>
 
         {% if error %}
-        <p style="color: red">Error: {{ error }}</p>
+        <div class="error">Error: {{ error }}</div>
         {% endif %}
 
         <form method="post" enctype="multipart/form-data">
@@ -28,36 +158,37 @@
         </form>
 
         {% if success %}
-        <h2>Archivo Cargado:</h2>
-        <p>{{ uploaded_file_url }}</p>
+        <div class="results">
+            <h2>Archivo Cargado:</h2>
+            <p>{{ uploaded_file_url }}</p>
 
-        <h2>Centroides de los Clústeres:</h2>
-        <ul>
-            {% for center in cluster_centers %}
-            <li>{{ center }}</li>
-            {% endfor %}
-        </ul>
-
-        <h2>Datos con Clústeres:</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    {% for key in data_with_clusters.0.keys %}
-                    <th>{{ key }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data_with_clusters %}
-                <tr>
-                    {% for value in row.values %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
+            <h2>Centroides de los Clústeres:</h2>
+            <ul>
+                {% for center in cluster_centers %}
+                <li>{{ center }}</li>
                 {% endfor %}
-            </tbody>
-        </table>
+            </ul>
+
+            <h2>Datos con Clústeres:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        {% for key in data_with_clusters.0.keys %}
+                        <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data_with_clusters %}
+                    <tr>
+                        {% for value in row.values %}
+                        <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% endif %}
-        <!--  AHORA el endif cierra DESPUÉS de la tabla -->
     </body>
 </html>

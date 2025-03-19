@@ -3,11 +3,21 @@ from django.http import HttpResponse
 from .clustering import KMeansCluster  # Importa desde clustering.py
 import pandas as pd
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings  #
+import os
+
 
 def clustering_view(request):
     if request.method == 'POST' and request.FILES.get('datafile'):
         myfile = request.FILES['datafile']
-        fs = FileSystemStorage()
+
+        media = 'media/'
+
+        file_storage_path = os.path.join(settings.MEDIA_ROOT, media)
+
+        # Crea el directorio si no existe
+        os.makedirs(file_storage_path, exist_ok=True)
+        fs = FileSystemStorage(location=file_storage_path)
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
 
@@ -20,7 +30,8 @@ def clustering_view(request):
                 return HttpResponse("Formato de archivo no soportado.", status=400)
 
             data_cleaned = data.dropna()
-            numerical_cols = data_cleaned.select_dtypes(include=['number']).columns
+            numerical_cols = data_cleaned.select_dtypes(
+                include=['number']).columns
             data_for_clustering = data_cleaned[numerical_cols]
 
             num_clusters = int(request.POST.get('num_clusters', 3))
@@ -39,7 +50,8 @@ def clustering_view(request):
                 'labels': labels.tolist(),
                 'success': True,
             }
-            return render(request, 'clustering_results.html', context)  # Template en la raíz
+            # Template en la raíz
+            return render(request, 'clustering_results.html', context)
 
         except Exception as e:
             return render(request, 'clustering_results.html', {'error': str(e)})

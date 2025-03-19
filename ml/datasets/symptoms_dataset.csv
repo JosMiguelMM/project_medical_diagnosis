@@ -1,0 +1,10 @@
+fiebre,tos,dolor_garganta,estornudos,dificultad_respirar,diagnostico
+1,1,1,0,0,gripe
+0,1,1,1,0,alergia
+0,0,0,1,1,neumonia
+1,1,0,0,0,gripe
+1,0,1,0,0,gripe
+0,0,0,1,0,alergia
+1,1,1,1,0,gripe
+0,1,0,1,0,alergia
+0,0,1,1,1,neumonia

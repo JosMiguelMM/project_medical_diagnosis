@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Resultados del Clustering</title>
+    </head>
+    <body>
+        <h1>Carga de Datos y Clustering</h1>
+
+        {% if error %}
+        <p style="color: red">Error: {{ error }}</p>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="datafile">Sube un archivo CSV o Excel:</label>
+            <input type="file" name="datafile" id="datafile" required />
+            <br />
+            <label for="num_clusters">Número de Clusters:</label>
+            <input
+                type="number"
+                name="num_clusters"
+                id="num_clusters"
+                value="3"
+                min="1"
+            />
+            <br />
+            <button type="submit">Realizar Clustering</button>
+        </form>
+
+        {% if success %}
+        <h2>Archivo Cargado:</h2>
+        <p>{{ uploaded_file_url }}</p>
+
+        <h2>Centroides de los Clústeres:</h2>
+        <ul>
+            {% for center in cluster_centers %}
+            <li>{{ center }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Datos con Clústeres:</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for key in data_with_clusters.0.keys %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data_with_clusters %}
+                <tr>
+                    {% for value in row.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        <!--  AHORA el endif cierra DESPUÉS de la tabla -->
+    </body>
+</html>

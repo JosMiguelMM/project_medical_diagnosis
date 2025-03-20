@@ -82,22 +82,20 @@ El proyecto se encuentra en una fase inicial de desarrollo. Se ha completado la 
 
 **Diagrama del Flujo del Módulo de IA:**
 
-```mermaid
 graph LR
-    A[Usuario carga archivo CSV/Excel] --> B(Vista de Django: clustering_view);
-    B --> C{Archivo válido?};
-    C -- Sí --> D[Leer datos con pandas];
-    D --> E[Limpiar datos (eliminar NaN)];
-    E --> F[Seleccionar columnas numéricas];
-    F --> G[Crear instancia de KMeansCluster];
-    G --> H[Entrenar modelo (fit)];
-    H --> I[Obtener centroides y etiquetas];
-    I --> J[Agregar etiquetas a los datos];
-    J --> K[Renderizar plantilla con resultados];
-    C -- No --> L[Mostrar mensaje de error];
-    K --> M[Usuario ve resultados en la web];
-    L --> M;
-```
+A[Usuario carga archivo CSV/Excel] --> B(Vista de Django: clustering_view);
+B --> C{Archivo válido?};
+C -- Sí --> D[Leer datos con pandas];
+D --> E[Limpiar datos (eliminar NaN)];
+E --> F[Seleccionar columnas numéricas];
+F --> G[Crear instancia de KMeansCluster];
+G --> H[Entrenar modelo (fit)];
+H --> I[Obtener centroides y etiquetas];
+I --> J[Agregar etiquetas a los datos];
+J --> K[Renderizar plantilla con resultados];
+C -- No --> L[Mostrar mensaje de error];
+K --> M[Usuario ve resultados en la web];
+L --> M;
 
 ![Clustering Process Illustration](img/p1.png)
 
